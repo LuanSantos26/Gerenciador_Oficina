@@ -19,6 +19,7 @@ public class OrdemServicoController {
     @Autowired
     private OrdemServicoService service;
 
+    // Método que havia sumido (Abre a OS no sistema)
     @PostMapping
     public ResponseEntity<OrdemServico> abrirOS(@RequestBody Map<String, Object> payload) {
         Long veiculoId = Long.valueOf(payload.get("veiculoId").toString());
@@ -27,12 +28,14 @@ public class OrdemServicoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.abrirOS(veiculoId, defeito));
     }
 
+    // Mantemos apenas a versão nova do adicionarItem (com o funcionário)
     @PostMapping("/{id}/itens")
     public ResponseEntity<ItemServico> adicionarItem(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
         String descricao = payload.get("descricao").toString();
         BigDecimal valor = new BigDecimal(payload.get("valor").toString());
+        Long funcionarioId = Long.valueOf(payload.get("funcionarioId").toString());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.adicionarItem(id, descricao, valor));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.adicionarItem(id, descricao, valor, funcionarioId));
     }
 
     @PutMapping("/{id}/finalizar")

@@ -1,6 +1,8 @@
 package gerenciador.oficina.demo.service;
 
+import gerenciador.oficina.demo.domain.Cliente;
 import gerenciador.oficina.demo.domain.Veiculo;
+import gerenciador.oficina.demo.repository.ClienteRepository;
 import gerenciador.oficina.demo.repository.VeiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,16 +13,24 @@ import java.util.List;
 public class VeiculoService {
 
     @Autowired
-    private VeiculoRepository repository;
+    private VeiculoRepository veiculoRepository;
 
-    public Veiculo cadastrar(Veiculo veiculo) {
-        if (repository.existsByPlaca(veiculo.getPlaca())) {
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    public Veiculo cadastrar(Long clienteId, Veiculo veiculo) {
+        if (veiculoRepository.existsByPlaca(veiculo.getPlaca())) {
             throw new RuntimeException("Já existe um caminhão cadastrado com esta placa!");
         }
-        return repository.save(veiculo);
+
+        Cliente dono = clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado!"));
+
+        veiculo.setCliente(dono);
+        return veiculoRepository.save(veiculo);
     }
 
     public List<Veiculo> listarTodos() {
-        return repository.findAll();
+        return veiculoRepository.findAll();
     }
 }

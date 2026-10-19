@@ -12,6 +12,11 @@ public class Veiculo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Vários caminhões podem pertencer a uma mesma transportadora/cliente
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
     @Column(nullable = false, unique = true)
     private String placa;
 

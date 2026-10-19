@@ -23,4 +23,9 @@ public class ItemServico {
     @ManyToOne(optional = false)
     @JoinColumn(name = "ordem_servico_id")
     private OrdemServico ordemServico;
+
+    // Registra qual mecânico/eletricista executou este item
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "funcionario_id")
+    private Funcionario funcionario;
 }

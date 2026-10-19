@@ -1,44 +1,49 @@
-### 1. Cadastrar o Caminhão
-POST http://localhost:8080/api/veiculos
+### 1. Cadastrar um Eletricista Automotivo
+POST http://localhost:8080/api/funcionarios
 Content-Type: application/json
 
 {
-  "placa": "XYZ-9876",
-  "marca": "Ford",
-  "modelo": "Cargo 816",
-  "anoFabricacao": 2018,
-  "chassi": "9BFZZZ"
+  "nome": "Luan Feitosa",
+  "cargo": "Eletricista Automotivo Sênior"
 }
 
-### 2. Abrir OS para o Caminhão ID 1
+### 2. Cadastrar Cliente (Necessário antes do Veículo)
+POST http://localhost:8080/api/clientes
+Content-Type: application/json
+
+{
+  "nomeOuRazaoSocial": "Logística Rápida",
+  "cpfOuCnpj": "00.000.000/0001-00",
+  "telefone": "(81) 98888-7777"
+}
+
+### 3. Cadastrar Veículo para o Cliente ID 1
+POST http://localhost:8080/api/veiculos/1
+Content-Type: application/json
+
+{
+  "placa": "ABC-1234",
+  "marca": "Volkswagen",
+  "modelo": "Constellation 24.280",
+  "anoFabricacao": 2021,
+  "chassi": "9BWZZZ"
+}
+
+### 4. Abrir OS para o Veículo ID 1
 POST http://localhost:8080/api/ordens-servico
 Content-Type: application/json
 
 {
   "veiculoId": 1,
-  "defeitoRelatado": "Veículo chegou com problemas elétricos. Fusíveis F73 e F78 não estão sendo alimentados."
+  "defeitoRelatado": "Revisão na parte elétrica"
 }
 
-### 3. Adicionar uma Peça/Serviço na OS ID 1
+### 5. Adicionar Serviço apontando quem executou (Funcionário ID 1)
 POST http://localhost:8080/api/ordens-servico/1/itens
 Content-Type: application/json
 
 {
-  "descricao": "Substituição do Chicote Elétrico Principal",
-  "valor": 450.50
+  "descricao": "Reparo no chicote dos faróis",
+  "valor": 150.00,
+  "funcionarioId": 1
 }
-
-### 4. Adicionar Mão de Obra na OS ID 1
-POST http://localhost:8080/api/ordens-servico/1/itens
-Content-Type: application/json
-
-{
-  "descricao": "Mão de Obra Especializada Eletricista",
-  "valor": 200.00
-}
-
-### 5. Finalizar a OS ID 1 (Registrar a Saída)
-PUT http://localhost:8080/api/ordens-servico/1/finalizar
-
-### 6. Consultar como a OS ficou no banco
-GET http://localhost:8080/api/ordens-servico

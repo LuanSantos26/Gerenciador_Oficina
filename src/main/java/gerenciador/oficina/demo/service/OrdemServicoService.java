@@ -1,12 +1,7 @@
 package gerenciador.oficina.demo.service;
 
-import gerenciador.oficina.demo.domain.ItemServico;
-import gerenciador.oficina.demo.domain.OrdemServico;
-import gerenciador.oficina.demo.domain.StatusOS;
-import gerenciador.oficina.demo.domain.Veiculo;
-import gerenciador.oficina.demo.repository.ItemServicoRepository;
-import gerenciador.oficina.demo.repository.OrdemServicoRepository;
-import gerenciador.oficina.demo.repository.VeiculoRepository;
+import gerenciador.oficina.demo.domain.*;
+import gerenciador.oficina.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +21,9 @@ public class OrdemServicoService {
     @Autowired
     private ItemServicoRepository itemRepository;
 
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
+
     public OrdemServico abrirOS(Long veiculoId, String defeitoRelatado) {
         Veiculo veiculo = veiculoRepository.findById(veiculoId)
                 .orElseThrow(() -> new RuntimeException("Veículo não encontrado!"));
@@ -37,7 +35,7 @@ public class OrdemServicoService {
         return osRepository.save(novaOs);
     }
 
-    public ItemServico adicionarItem(Long osId, String descricao, BigDecimal valor) {
+    public ItemServico adicionarItem(Long osId, String descricao, BigDecimal valor, Long funcionarioId) {
         OrdemServico os = osRepository.findById(osId)
                 .orElseThrow(() -> new RuntimeException("OS não encontrada!"));
 
@@ -45,17 +43,19 @@ public class OrdemServicoService {
             throw new RuntimeException("Não é possível adicionar peças a uma OS já finalizada.");
         }
 
-        // Muda o status automaticamente ao iniciar o trabalho
+        Funcionario executor = funcionarioRepository.findById(funcionarioId)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado no sistema!"));
+
         os.setStatus(StatusOS.EM_ANDAMENTO);
 
         ItemServico item = new ItemServico();
         item.setDescricao(descricao);
         item.setValor(valor);
         item.setOrdemServico(os);
+        item.setFuncionario(executor); // Vincula o eletricista/mecânico ao item
 
         ItemServico itemSalvo = itemRepository.save(item);
 
-        // Soma o valor da peça ao total da OS
         os.setValorTotal(os.getValorTotal().add(valor));
         osRepository.save(os);
 

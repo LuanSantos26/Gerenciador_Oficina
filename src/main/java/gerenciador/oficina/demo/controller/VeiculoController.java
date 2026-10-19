@@ -16,9 +16,10 @@ public class VeiculoController {
     @Autowired
     private VeiculoService service;
 
-    @PostMapping
-    public ResponseEntity<Veiculo> cadastrar(@RequestBody Veiculo veiculo) {
-        Veiculo novoVeiculo = service.cadastrar(veiculo);
+    // Novo método que exige o ID do cliente para cadastrar o caminhão
+    @PostMapping("/{clienteId}")
+    public ResponseEntity<Veiculo> cadastrar(@PathVariable Long clienteId, @RequestBody Veiculo veiculo) {
+        Veiculo novoVeiculo = service.cadastrar(clienteId, veiculo);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoVeiculo);
     }
 
