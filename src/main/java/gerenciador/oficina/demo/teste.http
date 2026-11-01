@@ -1,0 +1,120 @@
+### 1. Cadastrar um Eletricista Automotivo
+POST http://localhost:8080/api/funcionarios
+Content-Type: application/json
+
+{
+  "nome": "Luan Feitosa",
+  "cargo": "Eletricista Automotivo Sênior"
+}
+
+### 2. Cadastrar Cliente (Necessário antes do Veículo)
+POST http://localhost:8080/api/clientes
+Content-Type: application/json
+
+{
+  "nomeOuRazaoSocial": "Logística Rápida",
+  "cpfOuCnpj": "00.000.000/0001-00",
+  "telefone": "(81) 98888-7777"
+}
+
+### 3. Cadastrar Veículo para o Cliente ID 1
+POST http://localhost:8080/api/veiculos/1
+Content-Type: application/json
+
+{
+  "placa": "ABC-1234",
+  "marca": "Volkswagen",
+  "modelo": "Constellation 24.280",
+  "anoFabricacao": 2021,
+  "chassi": "9BWZZZ"
+}
+
+### 4. Abrir OS para o Veículo ID 1
+POST http://localhost:8080/api/ordens-servico
+Content-Type: application/json
+
+{
+  "veiculoId": 1,
+  "defeitoRelatado": "Revisão na parte elétrica"
+}
+
+### 5. Adicionar Serviço apontando quem executou (Funcionário ID 1)
+POST http://localhost:8080/api/ordens-servico/1/itens
+Content-Type: application/json
+
+{
+  "descricao": "Reparo no chicote dos faróis",
+  "valor": 150.00,
+  "funcionarioId": 1
+}
+
+### 6. Listar os itens (peças e mão de obra) da OS 1
+GET http://localhost:8080/api/ordens-servico/1/itens
+
+### 7. Mudar o status da OS 1 (ABERTA, EM_ANDAMENTO, AGUARDANDO_PECA)
+PUT http://localhost:8080/api/ordens-servico/1/status
+Content-Type: application/json
+
+{
+  "status": "AGUARDANDO_PECA"
+}
+
+### 8. Buscar uma OS pelo id
+GET http://localhost:8080/api/ordens-servico/1
+
+### 9. Abrir OS informando o km de entrada
+POST http://localhost:8080/api/ordens-servico
+Content-Type: application/json
+
+{
+  "veiculoId": 1,
+  "defeitoRelatado": "Freio puxando para a esquerda [Freios / Pneumático]",
+  "kmEntrada": 350000
+}
+
+### 10. Lançar uma PEÇA (tipo, quantidade e código)
+POST http://localhost:8080/api/ordens-servico/1/itens
+Content-Type: application/json
+
+{
+  "descricao": "Filtro de óleo lubrificante",
+  "valor": 330.00,
+  "funcionarioId": 1,
+  "tipo": "PECA",
+  "quantidade": 2,
+  "codigoPeca": "SC-1873016"
+}
+
+### 11. Progresso: histórico de status da OS
+GET http://localhost:8080/api/ordens-servico/1/historico
+
+### 12. Saída do veículo (km e quem retirou)
+PUT http://localhost:8080/api/ordens-servico/1/finalizar
+Content-Type: application/json
+
+{
+  "kmSaida": 350015,
+  "retiradoPor": "João (motorista)"
+}
+
+### 13. Enviar foto do problema (multipart) — troque o caminho do arquivo
+POST http://localhost:8080/api/ordens-servico/1/fotos
+Content-Type: multipart/form-data; boundary=FOTO
+
+--FOTO
+Content-Disposition: form-data; name="categoria"
+
+PROBLEMA
+--FOTO
+Content-Disposition: form-data; name="descricao"
+
+Vazamento no retentor do cubo
+--FOTO
+Content-Disposition: form-data; name="arquivo"; filename="foto.jpg"
+Content-Type: image/jpeg
+
+< ./foto.jpg
+--FOTO--
+
+### 14. Listar fotos da OS 1
+GET http://localhost:8080/api/ordens-servico/1/fotos
