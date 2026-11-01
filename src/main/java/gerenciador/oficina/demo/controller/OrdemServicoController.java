@@ -1,10 +1,15 @@
 package gerenciador.oficina.demo.controller;
 
+<<<<<<< HEAD
 import gerenciador.oficina.demo.domain.HistoricoStatusOS;
 import gerenciador.oficina.demo.domain.ItemServico;
 import gerenciador.oficina.demo.domain.OrdemServico;
 import gerenciador.oficina.demo.domain.StatusOS;
 import gerenciador.oficina.demo.domain.TipoItem;
+=======
+import gerenciador.oficina.demo.domain.ItemServico;
+import gerenciador.oficina.demo.domain.OrdemServico;
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
 import gerenciador.oficina.demo.service.OrdemServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,11 +27,16 @@ public class OrdemServicoController {
     @Autowired
     private OrdemServicoService service;
 
+<<<<<<< HEAD
     // Abre a OS. Body: { "veiculoId": 1, "defeitoRelatado": "...", "kmEntrada": 350000 }  (kmEntrada é opcional)
+=======
+    // Método que havia sumido (Abre a OS no sistema)
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
     @PostMapping
     public ResponseEntity<OrdemServico> abrirOS(@RequestBody Map<String, Object> payload) {
         Long veiculoId = Long.valueOf(payload.get("veiculoId").toString());
         String defeito = payload.get("defeitoRelatado").toString();
+<<<<<<< HEAD
         Integer kmEntrada = inteiro(payload.get("kmEntrada"));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(service.abrirOS(veiculoId, defeito, kmEntrada));
@@ -34,11 +44,19 @@ public class OrdemServicoController {
 
     // Body: { "descricao", "valor", "funcionarioId", "tipo": "PECA" | "MAO_DE_OBRA", "quantidade", "codigoPeca" }
     // (tipo, quantidade e codigoPeca são opcionais)
+=======
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.abrirOS(veiculoId, defeito));
+    }
+
+    // Mantemos apenas a versão nova do adicionarItem (com o funcionário)
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
     @PostMapping("/{id}/itens")
     public ResponseEntity<ItemServico> adicionarItem(@PathVariable Long id, @RequestBody Map<String, Object> payload) {
         String descricao = payload.get("descricao").toString();
         BigDecimal valor = new BigDecimal(payload.get("valor").toString());
         Long funcionarioId = Long.valueOf(payload.get("funcionarioId").toString());
+<<<<<<< HEAD
         TipoItem tipo = payload.get("tipo") != null ? TipoItem.valueOf(payload.get("tipo").toString()) : TipoItem.MAO_DE_OBRA;
         Integer quantidade = inteiro(payload.get("quantidade"));
         String codigoPeca = payload.get("codigoPeca") != null ? payload.get("codigoPeca").toString() : null;
@@ -53,12 +71,22 @@ public class OrdemServicoController {
         Integer kmSaida = payload != null ? inteiro(payload.get("kmSaida")) : null;
         String retiradoPor = payload != null && payload.get("retiradoPor") != null ? payload.get("retiradoPor").toString() : null;
         return ResponseEntity.ok(service.finalizarOS(id, kmSaida, retiradoPor));
+=======
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.adicionarItem(id, descricao, valor, funcionarioId));
+    }
+
+    @PutMapping("/{id}/finalizar")
+    public ResponseEntity<OrdemServico> finalizarOS(@PathVariable Long id) {
+        return ResponseEntity.ok(service.finalizarOS(id));
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
     }
 
     @GetMapping
     public ResponseEntity<List<OrdemServico>> listar() {
         return ResponseEntity.ok(service.listarTodas());
     }
+<<<<<<< HEAD
 
     @GetMapping("/{id}")
     public ResponseEntity<OrdemServico> buscar(@PathVariable Long id) {
@@ -89,3 +117,6 @@ public class OrdemServicoController {
         return new BigDecimal(valor.toString()).intValue();
     }
 }
+=======
+}
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d

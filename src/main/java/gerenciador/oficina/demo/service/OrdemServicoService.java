@@ -24,6 +24,7 @@ public class OrdemServicoService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
+<<<<<<< HEAD
     @Autowired
     private HistoricoStatusOSRepository historicoRepository;
 
@@ -32,12 +33,16 @@ public class OrdemServicoService {
     }
 
     public OrdemServico abrirOS(Long veiculoId, String defeitoRelatado, Integer kmEntrada) {
+=======
+    public OrdemServico abrirOS(Long veiculoId, String defeitoRelatado) {
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
         Veiculo veiculo = veiculoRepository.findById(veiculoId)
                 .orElseThrow(() -> new RuntimeException("Veículo não encontrado!"));
 
         OrdemServico novaOs = new OrdemServico();
         novaOs.setVeiculo(veiculo);
         novaOs.setDefeitoRelatado(defeitoRelatado);
+<<<<<<< HEAD
         novaOs.setKmEntrada(kmEntrada);
 
         OrdemServico salva = osRepository.save(novaOs);
@@ -52,6 +57,15 @@ public class OrdemServicoService {
     public ItemServico adicionarItem(Long osId, String descricao, BigDecimal valor, Long funcionarioId,
                                      TipoItem tipo, Integer quantidade, String codigoPeca) {
         OrdemServico os = buscarPorId(osId);
+=======
+
+        return osRepository.save(novaOs);
+    }
+
+    public ItemServico adicionarItem(Long osId, String descricao, BigDecimal valor, Long funcionarioId) {
+        OrdemServico os = osRepository.findById(osId)
+                .orElseThrow(() -> new RuntimeException("OS não encontrada!"));
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
 
         if (os.getStatus() == StatusOS.FINALIZADA) {
             throw new RuntimeException("Não é possível adicionar peças a uma OS já finalizada.");
@@ -60,19 +74,26 @@ public class OrdemServicoService {
         Funcionario executor = funcionarioRepository.findById(funcionarioId)
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado no sistema!"));
 
+<<<<<<< HEAD
         if (os.getStatus() == StatusOS.ABERTA) {
             os.setStatus(StatusOS.EM_ANDAMENTO);
             registrarHistorico(os, StatusOS.EM_ANDAMENTO, "Primeiro item lançado");
         }
+=======
+        os.setStatus(StatusOS.EM_ANDAMENTO);
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
 
         ItemServico item = new ItemServico();
         item.setDescricao(descricao);
         item.setValor(valor);
         item.setOrdemServico(os);
         item.setFuncionario(executor); // Vincula o eletricista/mecânico ao item
+<<<<<<< HEAD
         item.setTipo(tipo != null ? tipo : TipoItem.MAO_DE_OBRA);
         item.setQuantidade(quantidade != null && quantidade > 0 ? quantidade : 1);
         item.setCodigoPeca(codigoPeca);
+=======
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
 
         ItemServico itemSalvo = itemRepository.save(item);
 
@@ -83,6 +104,7 @@ public class OrdemServicoService {
     }
 
     public OrdemServico finalizarOS(Long osId) {
+<<<<<<< HEAD
         return finalizarOS(osId, null, null);
     }
 
@@ -147,9 +169,21 @@ public class OrdemServicoService {
         h.setDataHora(LocalDateTime.now());
         h.setObservacao(observacao);
         historicoRepository.save(h);
+=======
+        OrdemServico os = osRepository.findById(osId)
+                .orElseThrow(() -> new RuntimeException("OS não encontrada!"));
+
+        os.setStatus(StatusOS.FINALIZADA);
+        os.setDataSaida(LocalDateTime.now());
+        return osRepository.save(os);
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
     }
 
     public List<OrdemServico> listarTodas() {
         return osRepository.findAll();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d

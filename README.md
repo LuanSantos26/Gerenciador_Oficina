@@ -10,7 +10,11 @@ Java 17
 
 Spring Boot (Web, Data JPA, Validation)
 
+<<<<<<< HEAD
 PostgreSQL (Banco de dados relacional)
+=======
+MySQL (Banco de dados relacional)
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
 
 Lombok (Redução de código boilerplate)
 
@@ -50,7 +54,11 @@ Pré-requisitos
 
 Java Development Kit (JDK) 17 ou superior instalado.
 
+<<<<<<< HEAD
 Servidor PostgreSQL rodando localmente (porta padrão 5432).
+=======
+Servidor MySQL rodando localmente (porta padrão 3306).
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
 
 Uma IDE de sua preferência (IntelliJ IDEA, Eclipse, VS Code).
 
@@ -61,6 +69,7 @@ Clone este repositório:
 git clone https://github.com/seu-usuario/gerenciador-oficina.git
 
 
+<<<<<<< HEAD
 Crie o banco de dados no PostgreSQL:
 Abra o pgAdmin (Query Tool) ou o psql e execute:
 
@@ -73,6 +82,19 @@ Navegue até o arquivo src/main/resources/application.properties e ajuste usuár
 
 spring.datasource.url=jdbc:postgresql://localhost:5432/oficina
 spring.datasource.username=postgres
+=======
+Crie o banco de dados no MySQL:
+Abra o seu terminal MySQL ou Workbench e execute:
+
+CREATE DATABASE oficina_db;
+
+
+Configure as credenciais do banco:
+Navegue até o arquivo src/main/resources/application.properties e altere a senha para a senha do seu usuário root local:
+
+spring.datasource.url=jdbc:mysql://localhost:3306/oficina_db?serverTimezone=UTC
+spring.datasource.username=root
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
 spring.datasource.password=SUA_SENHA_AQUI
 
 

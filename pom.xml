@@ -43,10 +43,16 @@
 			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
 
+<<<<<<< HEAD
 		<!-- Driver do PostgreSQL (a versão vem do Spring Boot) -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+=======
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+>>>>>>> 1bc28070f1389c1461170931e3a598bb0f43d48d
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
